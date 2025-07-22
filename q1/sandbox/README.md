@@ -14,14 +14,13 @@ There are multiple types of sandboxing, depending on the scope and level of isol
 
 - Application sandboxing (isolating entire applications from the OS and other apps);
 - Process sandboxing (running a single process in a restricted environment);
-- Virtualization-based sandboxing	(using a virtual machine to isolate software);
-- Malware analysis sandboxing	(running malware in a controlled environment to study its behavior);
-- Container sandboxing	(isolating applications using OS-level virtualization).
+- Virtualization-based sandboxing (using a virtual machine to isolate software);
+- Malware analysis sandboxing (running malware in a controlled environment to study its behavior);
+- Container sandboxing (isolating applications using OS-level virtualization).
 
 The assignment of 42's sanbox.c is about process sandboxing. Instead of isolating an entire application, we are isolating a single function (process) inside a controlled environment.
 
 What our sandbox does:
-
 - Runs an unknown function (f()) inside a separate process.
 - Monitors if the function crashes, times out, or exits incorrectly.
 - Prevents bad functions from affecting the main program.
@@ -29,7 +28,7 @@ What our sandbox does:
 
 This is similar to application sandboxing, but at a smaller scale (process level).
 
-### RESRTRICTED ENVIRONMENT IN SANDOX
+### RESRTRICTED ENVIRONMENT IN SANDBOX
 
 Restricted environment means limiting what a process (or function) can do to prevent it from causing harm to the system. This includes restricting its access to system resources, execution time, and interactions with other processes.
 
@@ -42,7 +41,7 @@ A restricted environment imposes rules and limitations on a process. These restr
 
 ### HOW IS A PROCESS RESTRICTED
 
-The function int sandbox() will isolate process and run the untrusted function inside a separate process (child) so it cannot affect the main program. Main program will monitor the run time of the untrusted function and kill the process if it runs too long. Main program will detect crashes if they happen and handle signals (e.g., segmentation faults, illegal instructions). Finally, main program will monitore the exit status of the untrusted function and prevent zombie processes.
+The function int sandbox() will isolate process and run the untrusted function inside a separate process (child) so it cannot affect the main program. Main program will monitor the run time of the untrusted function and kill the process if it runs too long. Main program will detect crashes if they happen and handle signals (e.g., segmentation faults, illegal instructions). Finally, main program will monitor the exit status of the untrusted function and prevent zombie processes.
 
 ### PLAN TO IMPEMENT A 42'S SANDBOX
 
@@ -76,9 +75,8 @@ How the Kernel Processes a Signal
 
         A signal (e.g., SIGALRM) is sent via kill(), alarm(), etc.
         The kernel adds it to the processes's pending signal set in task_struct.
-        Pending Signal Set (sigpending). This is a bitmask stored in the process’s 
+        Pending Signal Set (sigpending). This is a bitmask stored in the process’s
         kernel structure. Each signal has a specific bit in this set.
-
 
     Check Blocked Signals:
 
@@ -109,7 +107,8 @@ Signal sets in 42's sandbox:
 
     Use: Specifically, set is used in combination with sigprocmask() to block SIGINT and SIGTERM so that the program doesn’t get interrupted by these signals during the critical section (e.g., child process management). After the critical section is completed, the signals are unblocked using sigprocmask(SIG_UNBLOCK, &set, NULL).
 
-#### GLOBAL VARIABLE static volatile sig_atomic_t timeout_flag 
+
+#### GLOBAL VARIABLE static volatile sig_atomic_t timeout_flag
 
 ´static:´ This makes timeout_flag a local static variable, meaning it’s only visible within the file and retains its value across function calls. It's not destroyed when the function scope ends.
 

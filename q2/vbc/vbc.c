@@ -7,11 +7,14 @@
 
 node	*parse_expr(char **s)
 {
+	// 1. Parse left node
 	node *left = parse_term(s);
+
 
 	while (accept(s, '+'))
 	{
 		node *right = parse_term(s);
+		// check
 		if (!right)
 		{
 			destroy_tree(left);
